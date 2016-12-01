@@ -151,11 +151,141 @@ Stop the application in Visual Studio. Once the application has ended, you will 
 
 Once you get that done, we will be configuring Build and Release settings for deploying your App code to your cloud ASF cluster. 
 
-> Overview of build and Release definitions
+## Configuring Build Definitions for ASF Applications
+
+> A build definition describes the details of what your solution build is supposed to do, and when it's supposed to do it. The definition configures the conditions on which your solution needs to compile your code and run tests.
 
 Navigate to the Build & Release tab at the top of the VSTS window and click **+ New definition**
 
  <img src="https://rtwrt.blob.core.windows.net/post1/img9.PNG" width="700">
+
+ In the new window, Select the Azure Service Fabric Application template for your Build Definition and click Next.
+
+ <img src="https://rtwrt.blob.core.windows.net/post1/img10.png" width="400">
+
+ Here you have the option of choosing a Repository Source such as GitHub or a Remote Git Repo. For this Lab we used TFS. Leave the default settings and click **Create**
+
+ <img src="https://rtwrt.blob.core.windows.net/post1/img11.png" width="400">
+
+ This is the Build Definition that gets Generated form the template.
+
+ - **Nuget Restore** - Restores the NuGet packages for the solution.
+ - **Build solution .sln** - Builds the entire solution.
+ - **Build solution .sfproj** - Generates the Service Fabric application package that will be used to deploy the application. Note that the application package location is specified to be within the build's artifact directory.
+ - **Update Service Fabric App Versions** - Updates the version values contained in the application package's manifest files to allow for upgrade support. See the task documentation page for more information.
+ - **Copy Files** - Copies the publish profile and application parameters files to the build's artifacts in order to be consumed for deployment.
+ - **Publish Artifact** -	Publishes the build's artifacts. This allows a release definition to consume the build's artifacts.
+
+  <img src="https://rtwrt.blob.core.windows.net/post1/img12.png" width="700">
+
+
+  Rename your Build Deffinition and click **Queue new build...**
+
+  This will prompt you to select an agent for your build, Choose Hosted.
+  > A hosted agent is a VM instance that is ran on Azure to host your app build. The VM pol is multitenant and the pipeline queue to allocat a VM for your build is first-come-first-serve.
+
+  <img src="https://rtwrt.blob.core.windows.net/post1/img13.png" width="700">
+  
+  Once a machine has been dedicated to your App Build, you will be prompted with the Build Log and break down of success for your Build Definitions. If succeeded you should see a screen similar to the one below.
+  
+  <img src="https://rtwrt.blob.core.windows.net/post1/img14.png" width="700">
+
+## Configuring Release Definitions for ASF Applications
+
+> Release Definition scopes the types of sources of deployable components that make up a new application release. The definition layers the logical entitys or environments  needs for your solution and executs tasks & scripts to configures the environment correctly.
+
+Here we will be configuring a release definition to deploy our ASF application to our SF cluster created earlier in this lab.
+
+Click Build & Release in the top Tab and click **Releases**
+
+Click **+ New definition ** and select the Azure Service Fabric Deployment Release Definition
+
+<img src="https://rtwrt.blob.core.windows.net/post1/img15.png" width="700">
+
+Click **Next**. Continue with the default settings and click **Create**
+
+Rename your Release definition to *Simple Azure Service Fabric Deployment*.
+
+The release definition has only one task, to deploy the succesful build version to a cloud ASF cluster.
+
+Inside the form view the cluster connection. There wont be any clusters from the drop down since we haven't added the cluster we deployed in Azure as a resourcein VSTS.
+
+<img src="https://rtwrt.blob.core.windows.net/post1/img16.png" width="700">
+
+Click **Add**
+
+Choose **Certificate Based** in the authentication option bubbles.
+
+Name your Connection name to something you would like it be called.
+
+Grab your Cluster Endpoint from the Azure portal under your Service Fabric resource Overview and enter it in the text box.
+
+Grab your Client Certificate from the Azure portal under your KeyVault resource overview and enter it in the text box.
+
+<img src="https://rtwrt.blob.core.windows.net/post1/img17_Ink_LI.jpg" width="700">
+
+For the Client Certificate, use powershell navigate to your certificate directory you generated on your machine in Step 1 of the lab. 
+
+The certificate should have been saved as mycert.pfx.
+
+Enter this command to grab the client certificate (replace with your file path).
+
+```Powershell
+[System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes("C:\Users\naros\Desktop\mycert.pfx"))
+```
+
+Copy the output and enter that in the Client Certificate field. This gives VSTS permissions to access your cluster in Azure.
+
+Select OK.
+
+Select Save and add a general comment.
+
+<img src="https://rtwrt.blob.core.windows.net/post1/img18.png" width="700">
+
+In the drop down for Environment select **Automated deployment: After release creation**
+
+Select **Create**.
+
+Go ahead and Queue your build and verify that the release deployment was successful.
+
+<img src="https://rtwrt.blob.core.windows.net/post1/img19.png" width="700">
+
+
+## Extra: Setting up your load balancer
+
+Navigate to the portal and open your ASF Cluster overview.
+
+Select the Service Fabric Explorer or type in your cluster endpoint as the url on port 19080.
+
+<img src="https://rtwrt.blob.core.windows.net/post1/img20.png" width="700">
+
+Here you can see that an application has been succefully deployed and is running on your cloud cluster.
+
+> If you used the VisualObject sample we need to connect to your cluster on port 8081 as stated in the app manifest to view the webservice that displays the moving object we viewed on our local machine. This requires configuring the Load Balancer for your VMSS.
+
+<img src="https://rtwrt.blob.core.windows.net/post1/img21.png" width="700">
+
+> Open the Load Balancer for your cluster. It may be called LB-[clustername]-[node-type].
+
+> Under the setting options Select **Probes**
+
+> Click **+Add** and enter the setting displayed in the image below.
+
+<img src="https://rtwrt.blob.core.windows.net/post1/img22.png" width="700">
+
+> Under the Settings options, Select **Load balancing rules**
+
+> Click **+Add** and enter the setting displayed in the image below.
+
+<img src="https://rtwrt.blob.core.windows.net/post1/img23.png" width="700">
+
+> Once the Probe and the Load Balancer Rules have been successfully update navigate back to port 8081 on your cluster connection endpoint.
+
+> You will now see the VisualObjects Web application being displayed!
+
+<img src="https://rtwrt.blob.core.windows.net/post1/img24.png" width="700">
+
+> You completed the lab! You are now an intermediate microservice Azure Service Fabric developer! Pat yourself on the back and complete this survey for feedback on the lab!
 
 
 
