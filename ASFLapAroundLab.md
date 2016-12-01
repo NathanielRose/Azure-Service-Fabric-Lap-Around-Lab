@@ -283,9 +283,9 @@ Here you can see that an application has been succefully deployed and is running
 
 > You will now see the VisualObjects Web application being displayed!
 
-<img src="https://rtwrt.blob.core.windows.net/post1/img24.png" width="700">
+<img src="https://rtwrt.blob.core.windows.net/post1/img25.gif" width="700">
 
-> You completed the lab! You are now an intermediate microservice Azure Service Fabric developer! Pat yourself on the back and complete this survey for feedback on the lab!
+> You completed the lab! You are now an intermediate microservice Azure Service Fabric developer! Pat yourself on the back and complete [this survey](https://www.surveymonkey.com/r/6PCTXNK) for feedback on the lab!
 
 
 

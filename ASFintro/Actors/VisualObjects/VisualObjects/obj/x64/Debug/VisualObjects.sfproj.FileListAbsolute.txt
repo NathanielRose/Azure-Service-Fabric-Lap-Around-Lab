@@ -1,0 +1,1 @@
+C:\Users\naros\Documents\GitHub\service-fabric-dotnet-getting-started-master\Actors\VisualObjects\VisualObjects\obj\x64\Debug\VisualObjects.sfprojResolveAssemblyReference.cache
