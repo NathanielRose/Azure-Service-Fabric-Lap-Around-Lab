@@ -9,11 +9,12 @@ Azure Service Fabric requires an understanding of VMSS, Key Vault, and ARM Templ
 
 ## Prerequisites
   - Windows 10
-  > With the Windows 10 anniversay edition you may need to turn off Secure Boot in the BIOS of your machine in order for the SF cluster to run locally
+> With the Windows 10 anniversay edition you may need to turn off Secure Boot in the BIOS of your machine in order for the SF cluster to run locally
   - [Visual Studio 2015 with Update 2 or Later](http://www.microsoft.com/web/handlers/webpi.ashx?command=getinstallerredirect&appid=MicrosoftAzure-ServiceFabric-VS2015)
   - [Service Fabric Runtime](https://www.microsoft.com/web/handlers/webpi.ashx?command=getinstallerredirect&appid=MicrosoftAzure-ServiceFabric-VS2015) & [SDK](http://www.microsoft.com/web/handlers/webpi.ashx?command=getinstallerredirect&appid=MicrosoftAzure-ServiceFabric-VS2015)
   - Windows Powershell
   - Visual Studio Team Services Account
+  - Microsoft Azure Subscription
 
 ## Setup you KeyVault
 
